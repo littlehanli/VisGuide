@@ -9,6 +9,8 @@ Data-exploration systems have become popular tools with which data analysts and 
 ## System Overview
 ![Imgur](https://imgur.com/bAXbzDB.png)
 
+## User Workflow
+![Imgur](https://imgur.com/P2t9vGO.png)
 
 ## Demo
 * Download dataset and put in new directory "data"
