@@ -1,0 +1,27 @@
+.evolution-tree.the-parent{ 
+    border-radius: 50%; 
+    background-color:transparent;
+    border:2px #AAAAAA solid;
+    -webkit-border-radius: 100px;
+    width: 10px;
+    height: 10px;
+}
+
+.evolution-tree.the-parent.con_drill{ 
+    border-radius: 50%; 
+    background-color:#72B36E;
+    border:5px #72B36E solid;
+    -webkit-border-radius: 100px;
+    width: 10px;
+    height: 10px;
+}
+
+.evolution-tree.the-parent.con_comparison{ 
+    border-radius: 50%; 
+    background-color:#B3856E;
+    border:5px #B3856E solid;
+    -webkit-border-radius: 100px;
+    width: 10px;
+    height: 10px;
+}
+

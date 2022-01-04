@@ -1,0 +1,6 @@
+data/
+result analysis/
+src/result/
+src/model/user
+src/TR_data
+src/__pycache__

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf8">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>VisGuide</title>
+
+    <link href="https://fonts.googleapis.com/css?family=IM+Fell+Great+Primer+SC&display=swap" rel="stylesheet">
+    <link rel=stylesheet type="text/css" href="Semantic-UI/semantic.min.css">
+    
+    <script src =  "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script> 
+    <script src="Treant/vendor/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/sankey.js"></script>
+    <script  src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="Semantic-UI/semantic.min.js"></script>
+    <link rel="stylesheet" href="Treant/Treant.css">
+    <script src="Treant/vendor/raphael.js"></script>
+    <script src="Treant/Treant.js"></script>
+    <link rel="stylesheet" href="example6.css">
+
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript" src="htmlElement.js"></script>
+    <script type="text/javascript" src="line chart.js"></script>
+    <script type="text/javascript" src="bar chart.js"></script>
+    <script type="text/javascript" src="pie chart.js"></script>
+
+    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js" type="text/javascript"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-map.min.js" type="text/javascript"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/geodata/custom/world/world.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js" type="text/javascript"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-data-adapter.min.js"></script>
+
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script> 
+
+</head>
+
+<body>
+  <div id = "loader" class="ui active inverted dimmer"style="display:none;position: absolute;left:500px;top:500px;background-color:transparent">
+    <div class="ui text loader">Loading</div>
+  </div>
+
+  <div id="outer" style="display: flex;flex-flow: column;height: 100%; ">
+    
+    <!-- Navigation Bar-->
+    <div id='title_container' style="min-height:7% ;height: 7%;width:100%;background-color:#64909D;align-items: center;display: flex;" >
+      <div style="color:#E0E0E0;font-family:IM Fell Great Primer SC;display: inline-block; *display: inline; vertical-align: center;font-size: 25pt;margin-left: 10px;  ">VisGuide</div>
+
+      <div style="margin-left: 1000px;width:250px">
+        <label id='dataset'style="color:#E0E0E0;font-family:IM Fell Great Primer SC;font-size: 13pt;">Dataset : </label>
+        <div class="ui simple dropdown" id='dataset_dropdown' style="font-size: 13pt;margin-left: 5px;color:#E0E0E0;font-family:IM Fell Great Primer SC;background-color: transparent;">
+          <div class="default text"></div>
+          <div class="menu"></div>
+          <i class="dropdown icon"></i>
+        </div>
+      </div>
+
+      <div style="margin-left: 30px;width:250px">
+        <label id='model'style="color:#E0E0E0;font-family:IM Fell Great Primer SC;font-size: 13pt;">Model:</label>
+        <div class="ui simple dropdown" id='model_dropdown' style="font-size: 13pt;margin-left: 5px;color:#E0E0E0;font-family:IM Fell Great Primer SC;background-color: transparent;">
+          <div class="default text">pretrain</div>
+          <div class="menu">
+            <div class="item" style = "font-family:IM Fell Great Primer SC;">scratch</div>
+            <div class="item" style = "font-family:IM Fell Great Primer SC;">pretrain</div>
+            <div class="item" style = "font-family:IM Fell Great Primer SC;">transfer</div>
+            <div class="item" style = "font-family:IM Fell Great Primer SC;">heuristic</div>
+          </div>
+          <i class="dropdown icon"></i>
+        </div>
+      </div>
+
+      <div class="ui button" id='change_user'data-position="bottom center" style="padding:10px;font-size:13pt; background-color:transparent;color: #E0E0E0;font-family:IM Fell Great Primer SC;">
+        <i class="user circle outline large icon" style="color: #E0E0E0;"></i>
+        <div style="width: 100px;margin-top: 10px;">Change user</div>
+      </div>  
+    </div>
+
+    <!-- Store Recommendation view + Tree view-->
+    <div id="container" style="width:100%;max-height:87.5% ;height: 87.5%">
+      
+      <!-- Recommendation view-->
+      <div id="rec_container" style="height:100%; width: 20%;border-style: solid;border-color:#E0E0E0;border-width: 4px;display: inline-block; *display: flex; zoom: 1; vertical-align: top; ">
+        <div style="background-color: #E0E0E0;height:5%;border-bottom: 5px solid #ECECEC">
+          <div style = "font-weight: bold;vertical-align: center;font-size: 14pt;padding:10px">Recommendation View</div>
+        </div>
+        
+        <div style="zoom: 1; vertical-align: top;height:94%;">
+            <div id ='drill_down'  style="height: 50%;overflow: auto;border-bottom: 2px solid #E0E0E0;margin-bottom: 5px;">
+              <div style="height:10%;font-weight: bold;vertical-align: center;font-size: 12pt;padding:8px;border-bottom: 2px solid #ECECEC;background-color: #F6F6F6 ">Drill-down</div>
+              <div class="ui list" id="drill_down_list" style="height:90%; overflow:auto;margin-top: 0px;text-align: center;">
+                
+              </div>
+            </div>    
+          
+            <div id = 'comparison' style="height: 50%;overflow: auto;border-top: 2px solid #E0E0E0;border-bottom: 2px solid #E0E0E0">
+              <div style="height:10%;font-weight: bold;vertical-align: center;font-size: 12pt;padding:8px;border-bottom: 2px solid #ECECEC;background-color: #F6F6F6 ">Comparison</div>
+              <div class="ui list" id="comparison_list" style="height:90%; overflow:auto;margin-top: 0px;text-align: center;"></div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Tree View-->
+      <div id="tree_container"style="max-height:100%;height:100%; width: 79%;border-style: solid;border-color:#E0E0E0;border-width: 4px;display: inline-block; *display: inline; zoom: 1; vertical-align: top;white-space: nowrap ">
+        <div style="background-color: #E0E0E0;height:5%;border-bottom: 5px solid #ECECEC">
+          <div style="font-weight: bold;display: inline-block; *display: inline; vertical-align: center;font-size: 14pt;padding: 10px; ">Tree View</div>
+            <button class="ui blue basic button" id="gen_poster_btn" style="visibility: hidden;float: right;margin-right: 5px;margin-top: 5px">Done</button>
+        </div>
+        
+        <!-- Add a chart panel-->
+        <div id='init'>
+          <button class="circular ui icon button" id="add_a_chart_btn" style="float: left;margin-left: 50px;margin-top: 50px;margin-right: 20px;">
+            <i class="plus icon"></i>
+          </button>
+          <div class="ui card" id='add_a_chart_card' style="visibility: hidden;float: left;">
+            <div class="content">
+              <div class="header">Add a chart</div><br>
+              <div>
+                <label id='dataset' style="float: left;align-content: center">X-axis</label>
+                <div class="ui selection dropdown" id='x_axis' style="margin-left: 20px">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">year</div>
+                  <div class="menu">
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 10px">
+                <label id='dataset' style="float: left">Y-axis</label>
+                <div class="ui selection dropdown" id='y_axis' style="margin-left: 20px">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">PM2.5(ug/m3)</div>
+                  <div class="menu">
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div class="extra content">
+                <button class="ui blue basic button" id='add_a_chart_confirm_btn'style="float: right;">Add</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sheet Manager-->
+  <div class="ui bottom fixed menu" id = "menu" style="background-color: #64909D;max-height: 5%;height: 5%; border-bottom: 0 none !important; border-top: 0 none !important;box-shadow: none;">
+    <a class="item" id='add_sheet' style="color:#E0E0E0"><i class="plus icon" style="color: #E0E0E0;"></i></a>
+    <a class="item sheet active " id="Sheet_1" style="padding: 6px;color:#E0E0E0;font-size: 12 pt;">Sheet 1
+      <i class="window close outline icon" id="icon_1" style="margin-left: 10px;color: #E0E0E0;"></i>
+    </a>
+  </div>
+
+  <!-- Important!! Related to the Treant.js, store temp node object-->
+  <div id='chart_temp' style="display:none"></div>
+</body>
+
+</html>
