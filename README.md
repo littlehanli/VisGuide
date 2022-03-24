@@ -22,4 +22,5 @@ Data-exploration systems have become popular tools with which data analysts and 
 [Download Datasets](https://drive.google.com/drive/folders/13CNfDDpSL_Lyk4QCw4QT9PAJfAulPEzh?usp=sharing)
 
 ## Demo
-[Video](https://youtu.be/ca2KVYku1ZQ)
+[System Demo Video](https://youtu.be/ca2KVYku1ZQ)
+[Paper Preview Video](https://youtu.be/OirfY9GOvWA)
