@@ -23,5 +23,3 @@ Data-exploration systems have become popular tools with which data analysts and 
 
 ## Demo
 * [System Demo Video](https://youtu.be/ca2KVYku1ZQ)
-
-* [Paper Preview Video](https://youtu.be/OirfY9GOvWA)
