@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Flask==1.1.2
 requests==2.24.0
 numpy==1.18.5
@@ -5,4 +6,13 @@ scikit-learn==0.23.1
 scipy==1.5.0
 json5==0.9.5
 dill==0.3.3
+=======
+Flask==1.1.2
+requests==2.24.0
+numpy==1.18.5
+scikit-learn==0.23.1
+scipy==1.5.0
+json5==0.9.5
+dill==0.3.3
+>>>>>>> 8f3fd185cebbf7b561fd5e265607d39a00fb0193
 Shapely==1.8.0
